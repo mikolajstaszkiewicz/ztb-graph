@@ -65,6 +65,10 @@ public class RuleExecutorImpl implements RuleExecutor {
 		this.transformer = transformer;
 	}
 
+	/*
+	 * r('1a1b') :- v(k,L,false), e(k,L,s,J), \+ v(s,J,off), e(s,J,c,_,_), then,
+	 * vla(s,J,off).
+	 */
 	private void rule1a1b() {
 		new GremlinPipeline<Vertex, Vertex>(graph).V(GraphConst.VERTEX_TYPE, "k").has(GraphConst.VERTEX_LABEL, "false")
 				.both().as("s").has(GraphConst.VERTEX_TYPE, "s").hasNot(GraphConst.VERTEX_LABEL, "off").both()
@@ -79,8 +83,8 @@ public class RuleExecutorImpl implements RuleExecutor {
 	private void rule2a2b() {
 		new GremlinPipeline<>(graph).V(GraphConst.VERTEX_TYPE, "s").as("s").hasNot(GraphConst.VERTEX_LABEL, "low")
 				.both("low").has(GraphConst.VERTEX_TYPE, "c")
-				.back("s").both("in").has(GraphConst.VERTEX_TYPE, "p")
-				.back("s").both().has(GraphConst.VERTEX_TYPE, "k")
+				.back("s").both("in").has(GraphConst.VERTEX_TYPE, "p").has(GraphConst.VERTEX_LABEL, "false")
+				.back("s").both().has(GraphConst.VERTEX_TYPE, "k").has(GraphConst.VERTEX_LABEL,"true")
 				.back("s").cast(Vertex.class).transform(new VertexLabelSet("low")).iterate();
 	}
 

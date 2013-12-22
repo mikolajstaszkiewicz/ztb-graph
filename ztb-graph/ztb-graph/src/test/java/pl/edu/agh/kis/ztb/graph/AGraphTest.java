@@ -34,9 +34,9 @@ public class AGraphTest {
 
 		Object[][] data = new Object[][] {
 				{new TinkerGraph()},
-				{TitanFactory.open(titanConfiguration)},
-				{new DexGraph("target/graph/dex")},
-				{new Neo4jGraph("target/graph/titan")}
+//				{TitanFactory.open(titanConfiguration)},
+//				{new DexGraph("target/graph/dex")},
+//				{new Neo4jGraph("target/graph/titan")}
 		};
 		return Arrays.asList(data);
 	}
