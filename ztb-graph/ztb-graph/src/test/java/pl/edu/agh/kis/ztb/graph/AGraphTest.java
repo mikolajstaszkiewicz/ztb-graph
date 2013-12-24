@@ -36,7 +36,7 @@ public class AGraphTest {
 				{new TinkerGraph()},
 //				{TitanFactory.open(titanConfiguration)},
 //				{new DexGraph("target/graph/dex")},
-//				{new Neo4jGraph("target/graph/titan")}
+//				{new Neo4jGraph("target/graph/neo4j")}
 		};
 		return Arrays.asList(data);
 	}

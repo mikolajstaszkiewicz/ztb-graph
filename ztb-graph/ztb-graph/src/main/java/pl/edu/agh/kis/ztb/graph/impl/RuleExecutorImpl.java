@@ -7,7 +7,7 @@ import com.tinkerpop.gremlin.java.GremlinPipeline;
 import pl.edu.agh.kis.ztb.graph.GraphTransformer;
 import pl.edu.agh.kis.ztb.graph.RuleExecutor;
 import pl.edu.agh.kis.ztb.graph.function.VertexLabelRemove;
-import pl.edu.agh.kis.ztb.graph.function.VertexLabelSet;
+import pl.edu.agh.kis.ztb.graph.function.VertexLabelAdd;
 import pl.edu.agh.kis.ztb.graph.util.GraphConst;
 
 public class RuleExecutorImpl implements RuleExecutor {
@@ -70,10 +70,10 @@ public class RuleExecutorImpl implements RuleExecutor {
 	 * vla(s,J,off).
 	 */
 	private void rule1a1b() {
-		new GremlinPipeline<Vertex, Vertex>(graph).V(GraphConst.VERTEX_TYPE, "k").has(GraphConst.VERTEX_LABEL, "false")
-				.both().as("s").has(GraphConst.VERTEX_TYPE, "s").hasNot(GraphConst.VERTEX_LABEL, "off").both()
+		new GremlinPipeline<Vertex, Vertex>(graph).V(GraphConst.VERTEX_TYPE, "k").has("false")
+				.both().as("s").has(GraphConst.VERTEX_TYPE, "s").hasNot("off").both()
 				.has(GraphConst.VERTEX_TYPE, "c")
-				.back("s").cast(Vertex.class).transform(new VertexLabelSet("off")).iterate();
+				.back("s").cast(Vertex.class).transform(new VertexLabelAdd("off")).iterate();
 	}
 
 	/*
@@ -81,11 +81,11 @@ public class RuleExecutorImpl implements RuleExecutor {
 	 * e(k,L,s,J), e(s,J,c,_,low), then, vla(s,J,low).
 	 */
 	private void rule2a2b() {
-		new GremlinPipeline<>(graph).V(GraphConst.VERTEX_TYPE, "s").as("s").hasNot(GraphConst.VERTEX_LABEL, "low")
+		new GremlinPipeline<>(graph).V(GraphConst.VERTEX_TYPE, "s").as("s").hasNot("low")
 				.both("low").has(GraphConst.VERTEX_TYPE, "c")
-				.back("s").both("in").has(GraphConst.VERTEX_TYPE, "p").has(GraphConst.VERTEX_LABEL, "false")
-				.back("s").both().has(GraphConst.VERTEX_TYPE, "k").has(GraphConst.VERTEX_LABEL,"true")
-				.back("s").cast(Vertex.class).transform(new VertexLabelSet("low")).iterate();
+				.back("s").both("in").has(GraphConst.VERTEX_TYPE, "p").has("false")
+				.back("s").both().has(GraphConst.VERTEX_TYPE, "k").has("true")
+				.back("s").cast(Vertex.class).transform(new VertexLabelAdd("low")).iterate();
 	}
 
 	/*
@@ -94,11 +94,11 @@ public class RuleExecutorImpl implements RuleExecutor {
 	 * e(k,L,s,J), e(s,J,c,_,high), then, vla(s,J,high).
 	 */
 	private void rule3a3b() {
-		new GremlinPipeline<>(graph).V(GraphConst.VERTEX_TYPE, "s").as("s").hasNot(GraphConst.VERTEX_LABEL, "high")
+		new GremlinPipeline<>(graph).V(GraphConst.VERTEX_TYPE, "s").as("s").hasNot("high")
 				.both("high").has(GraphConst.VERTEX_TYPE, "c")
-				.back("s").both("in").has(GraphConst.VERTEX_TYPE, "p").has(GraphConst.VERTEX_LABEL, "true")
-				.back("s").both().has(GraphConst.VERTEX_TYPE, "k").has(GraphConst.VERTEX_LABEL, "true")
-				.back("s").cast(Vertex.class).transform(new VertexLabelSet("high")).iterate();
+				.back("s").both("in").has(GraphConst.VERTEX_TYPE, "p").has("true")
+				.back("s").both().has(GraphConst.VERTEX_TYPE, "k").has("true")
+				.back("s").cast(Vertex.class).transform(new VertexLabelAdd("high")).iterate();
 	}
 
 	/*
@@ -107,13 +107,12 @@ public class RuleExecutorImpl implements RuleExecutor {
 	 * vla(s,J,high).
 	 */
 	private void rule4a() {
-		new GremlinPipeline<>(graph).V(GraphConst.VERTEX_TYPE, "s").as("s").hasNot(GraphConst.VERTEX_LABEL, "high")
+		new GremlinPipeline<>(graph).V(GraphConst.VERTEX_TYPE, "s").as("s").hasNot("high")
 				.both("high").has(GraphConst.VERTEX_TYPE, "c")
-				.back("s").both("dir_day").has(GraphConst.VERTEX_TYPE, "d").has(GraphConst.VERTEX_LABEL, "true")
-				.back("s").both().has(GraphConst.VERTEX_TYPE, "k").has(GraphConst.VERTEX_LABEL, "true")
-				.back("s").both().has(GraphConst.VERTEX_TYPE, "h").has(GraphConst.VERTEX_INDEX, 1).has(
-						GraphConst.VERTEX_LABEL, "day")
-				.back("s").cast(Vertex.class).transform(new VertexLabelSet("high")).iterate();
+				.back("s").both("dir_day").has(GraphConst.VERTEX_TYPE, "d").has("true")
+				.back("s").both().has(GraphConst.VERTEX_TYPE, "k").has("true")
+				.back("s").both().has(GraphConst.VERTEX_TYPE, "h").has(GraphConst.VERTEX_INDEX, 1).has("day")
+				.back("s").cast(Vertex.class).transform(new VertexLabelAdd("high")).iterate();
 	}
 
 	/*
@@ -123,13 +122,12 @@ public class RuleExecutorImpl implements RuleExecutor {
 	 * vla(s,J,high).
 	 */
 	private void rule4b() {
-		new GremlinPipeline<>(graph).V(GraphConst.VERTEX_TYPE, "s").as("s").hasNot(GraphConst.VERTEX_LABEL, "high")
+		new GremlinPipeline<>(graph).V(GraphConst.VERTEX_TYPE, "s").as("s").hasNot("high")
 				.both("high").has(GraphConst.VERTEX_TYPE, "c")
-				.back("s").both("dir_night").has(GraphConst.VERTEX_TYPE, "d").has(GraphConst.VERTEX_LABEL, "true")
-				.back("s").both().has(GraphConst.VERTEX_TYPE, "k").has(GraphConst.VERTEX_LABEL, "true")
-				.back("s").both().has(GraphConst.VERTEX_TYPE, "h").has(GraphConst.VERTEX_INDEX, 1).has(
-						GraphConst.VERTEX_LABEL, "night")
-				.back("s").cast(Vertex.class).transform(new VertexLabelSet("high")).iterate();
+				.back("s").both("dir_night").has(GraphConst.VERTEX_TYPE, "d").has("true")
+				.back("s").both().has(GraphConst.VERTEX_TYPE, "k").has("true")
+				.back("s").both().has(GraphConst.VERTEX_TYPE, "h").has(GraphConst.VERTEX_INDEX, 1).has("night")
+				.back("s").cast(Vertex.class).transform(new VertexLabelAdd("high")).iterate();
 	}
 
 	/*
@@ -138,13 +136,12 @@ public class RuleExecutorImpl implements RuleExecutor {
 	 * vla(s,J,off).
 	 */
 	private void rule5a() {
-		new GremlinPipeline<>(graph).V(GraphConst.VERTEX_TYPE, "s").as("s").hasNot(GraphConst.VERTEX_LABEL, "off")
+		new GremlinPipeline<>(graph).V(GraphConst.VERTEX_TYPE, "s").as("s").hasNot("off")
 				.both("high").has(GraphConst.VERTEX_TYPE, "c")
-				.back("s").both("dir_day").has(GraphConst.VERTEX_TYPE, "d").has(GraphConst.VERTEX_LABEL, "false")
-				.back("s").both().has(GraphConst.VERTEX_TYPE, "k").has(GraphConst.VERTEX_LABEL, "true")
-				.back("s").both().has(GraphConst.VERTEX_TYPE, "h").has(GraphConst.VERTEX_INDEX, 1).has(
-						GraphConst.VERTEX_LABEL, "day")
-				.back("s").cast(Vertex.class).transform(new VertexLabelSet("off")).iterate();
+				.back("s").both("dir_day").has(GraphConst.VERTEX_TYPE, "d").has("false")
+				.back("s").both().has(GraphConst.VERTEX_TYPE, "k").has("true")
+				.back("s").both().has(GraphConst.VERTEX_TYPE, "h").has(GraphConst.VERTEX_INDEX, 1).has("day")
+				.back("s").cast(Vertex.class).transform(new VertexLabelAdd("off")).iterate();
 	}
 
 	/*
@@ -154,13 +151,12 @@ public class RuleExecutorImpl implements RuleExecutor {
 	 * vla(s,J,off).
 	 */
 	private void rule5b() {
-		new GremlinPipeline<>(graph).V(GraphConst.VERTEX_TYPE, "s").as("s").hasNot(GraphConst.VERTEX_LABEL, "off")
+		new GremlinPipeline<>(graph).V(GraphConst.VERTEX_TYPE, "s").as("s").hasNot("off")
 				.both("high").has(GraphConst.VERTEX_TYPE, "c")
-				.back("s").both("dir_night").has(GraphConst.VERTEX_TYPE, "d").has(GraphConst.VERTEX_LABEL, "false")
-				.back("s").both().has(GraphConst.VERTEX_TYPE, "k").has(GraphConst.VERTEX_LABEL, "true")
-				.back("s").both().has(GraphConst.VERTEX_TYPE, "h").has(GraphConst.VERTEX_INDEX, 1).has(
-						GraphConst.VERTEX_LABEL, "night")
-				.back("s").cast(Vertex.class).transform(new VertexLabelSet("off")).iterate();
+				.back("s").both("dir_night").has(GraphConst.VERTEX_TYPE, "d").has("false")
+				.back("s").both().has(GraphConst.VERTEX_TYPE, "k").has("true")
+				.back("s").both().has(GraphConst.VERTEX_TYPE, "h").has(GraphConst.VERTEX_INDEX, 1).has("night")
+				.back("s").cast(Vertex.class).transform(new VertexLabelAdd("off")).iterate();
 
 	}
 
@@ -169,12 +165,11 @@ public class RuleExecutorImpl implements RuleExecutor {
 	 * v(s,J,high), e(s,J,c,_,high), then, vla(s,J,high).
 	 */
 	private void rule6() {
-		new GremlinPipeline<>(graph).V(GraphConst.VERTEX_TYPE, "s").as("s").hasNot(GraphConst.VERTEX_LABEL, "high")
+		new GremlinPipeline<>(graph).V(GraphConst.VERTEX_TYPE, "s").as("s").hasNot("high")
 				.both("high").has(GraphConst.VERTEX_TYPE, "c")
-				.back("s").both("interior").has(GraphConst.VERTEX_TYPE, "d").has(GraphConst.VERTEX_LABEL, "true")
-				.back("s").both().has(GraphConst.VERTEX_TYPE, "h").has(GraphConst.VERTEX_INDEX, 1).has(
-						GraphConst.VERTEX_LABEL, "day")
-				.back("s").cast(Vertex.class).transform(new VertexLabelSet("high")).iterate();
+				.back("s").both("interior").has(GraphConst.VERTEX_TYPE, "d").has("true")
+				.back("s").both().has(GraphConst.VERTEX_TYPE, "h").has(GraphConst.VERTEX_INDEX, 1).has("day")
+				.back("s").cast(Vertex.class).transform(new VertexLabelAdd("high")).iterate();
 
 	}
 
@@ -184,12 +179,11 @@ public class RuleExecutorImpl implements RuleExecutor {
 	 * e(s,J,c,_,high), e(h,1,s,J), then, vla(s,J,off).
 	 */
 	private void rule7() {
-		new GremlinPipeline<>(graph).V(GraphConst.VERTEX_TYPE, "s").as("s").hasNot(GraphConst.VERTEX_LABEL, "off")
+		new GremlinPipeline<>(graph).V(GraphConst.VERTEX_TYPE, "s").as("s").hasNot("off")
 				.both("high").has(GraphConst.VERTEX_TYPE, "c")
-				.back("s").both("interior").has(GraphConst.VERTEX_TYPE, "d").has(GraphConst.VERTEX_LABEL, "false")
-				.back("s").both().has(GraphConst.VERTEX_TYPE, "h").has(GraphConst.VERTEX_INDEX, 1).has(
-						GraphConst.VERTEX_LABEL, "day")
-				.back("s").cast(Vertex.class).transform(new VertexLabelSet("off")).iterate();
+				.back("s").both("interior").has(GraphConst.VERTEX_TYPE, "d").has("false")
+				.back("s").both().has(GraphConst.VERTEX_TYPE, "h").has(GraphConst.VERTEX_INDEX, 1).has("day")
+				.back("s").cast(Vertex.class).transform(new VertexLabelAdd("off")).iterate();
 	}
 
 	/*
@@ -197,11 +191,13 @@ public class RuleExecutorImpl implements RuleExecutor {
 	 * forall(e(s,I,c,J,_),(vlr(c,J,_),vla(c,J,off))), vlr(c,K,_), vla(c,K,on).
 	 */
 	private void profileHigh() {
-		new GremlinPipeline<>(graph).V(GraphConst.VERTEX_TYPE, "s").as("s").has(GraphConst.VERTEX_LABEL, "high")
+		new GremlinPipeline<>(graph).V(GraphConst.VERTEX_TYPE, "s").as("s").has("high")
 				.both("high").as("cHigh").has(GraphConst.VERTEX_TYPE, "c")
-				.back("cHigh").cast(Vertex.class).transform(new VertexLabelSet("on"))
+				.back("cHigh").cast(Vertex.class).transform(new VertexLabelRemove())
+				.back("cHigh").cast(Vertex.class).transform(new VertexLabelAdd("on"))
 				.back("s").bothE().hasNot("label", "high").bothV().as("cNotHigh").has(GraphConst.VERTEX_TYPE, "c")
-				.back("cNotHigh").cast(Vertex.class).transform(new VertexLabelSet("off"))
+				.back("cNotHigh").cast(Vertex.class).transform(new VertexLabelRemove())
+				.back("cNotHigh").cast(Vertex.class).transform(new VertexLabelAdd("off"))
 				.back("s").cast(Vertex.class).transform(new VertexLabelRemove()).iterate();
 
 	}
@@ -211,11 +207,13 @@ public class RuleExecutorImpl implements RuleExecutor {
 	 * forall(e(s,I,c,J,_),(vlr(c,J,_),vla(c,J,off))), vlr(c,K,_), vla(c,K,on).
 	 */
 	private void profileLow() {
-		new GremlinPipeline<>(graph).V(GraphConst.VERTEX_TYPE, "s").as("s").has(GraphConst.VERTEX_LABEL, "low")
-				.hasNot(GraphConst.VERTEX_LABEL, "high").both("low").as("cLow").has(GraphConst.VERTEX_TYPE, "c")
-				.back("cLow").cast(Vertex.class).transform(new VertexLabelSet("on"))
+		new GremlinPipeline<>(graph).V(GraphConst.VERTEX_TYPE, "s").as("s").has("low")
+				.hasNot("high").both("low").as("cLow").has(GraphConst.VERTEX_TYPE, "c")
+				.back("cLow").cast(Vertex.class).transform(new VertexLabelRemove())
+				.back("cLow").cast(Vertex.class).transform(new VertexLabelAdd("on"))
 				.back("s").bothE().hasNot("label", "low").bothV().as("cNotLow").has(GraphConst.VERTEX_TYPE, "c")
-				.back("cNotLow").cast(Vertex.class).transform(new VertexLabelSet("off"))
+				.back("cNotLow").cast(Vertex.class).transform(new VertexLabelRemove())
+				.back("cNotLow").cast(Vertex.class).transform(new VertexLabelAdd("off"))
 				.back("s").cast(Vertex.class).transform(new VertexLabelRemove()).iterate();
 
 	}
@@ -225,10 +223,11 @@ public class RuleExecutorImpl implements RuleExecutor {
 	 * forall(e(s,I,c,J,_),(vlr(c,J,_),vla(c,J,off))).
 	 */
 	private void profileOff() {
-		new GremlinPipeline<>(graph).V(GraphConst.VERTEX_TYPE, "s").as("s").has(GraphConst.VERTEX_LABEL, "off")
-				.hasNot(GraphConst.VERTEX_LABEL, "high").hasNot(GraphConst.VERTEX_LABEL, "low")
+		new GremlinPipeline<>(graph).V(GraphConst.VERTEX_TYPE, "s").as("s").has("off")
+				.hasNot("high").hasNot("low")
 				.both().as("c").has(GraphConst.VERTEX_TYPE, "c")
-				.back("c").cast(Vertex.class).transform(new VertexLabelSet("off"))
+				.back("c").cast(Vertex.class).transform(new VertexLabelRemove())
+				.back("c").cast(Vertex.class).transform(new VertexLabelAdd("off"))
 				.back("s").cast(Vertex.class).transform(new VertexLabelRemove()).iterate();
 
 	}

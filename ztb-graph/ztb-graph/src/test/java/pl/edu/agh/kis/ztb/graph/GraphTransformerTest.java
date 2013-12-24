@@ -44,12 +44,19 @@ public class GraphTransformerTest extends AGraphTest {
 	public void experimentTest() throws IOException {
 		ExperimentRunner experimentRunner = new ExperimentRunner();
 		experimentRunner.run(graph);
+		boolean testFail = false;
 		for (int i = 0; i < 10; ++i) {
-			System.out.println("experiment " + i);
+			System.out.print("experiment " + i);
 			List<String> expected = FileUtils.readLines(new File("src/test/resources/" + i + ".txt"));
 			List<String> actuals = FileUtils.readLines(new File(i + ".txt"));
-			Assert.assertEquals(expected.size(), actuals.size());
-			Assert.assertTrue(expected.containsAll(actuals));
+
+			if (!(expected.containsAll(actuals) && expected.size() == actuals.size())) {
+				System.out.println(" - fail");
+				testFail = true;
+			} else {
+				System.out.println(" - pass");
+			}
 		}
+		Assert.assertFalse(testFail);
 	}
 }
