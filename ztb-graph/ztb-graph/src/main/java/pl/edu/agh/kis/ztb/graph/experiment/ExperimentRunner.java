@@ -26,6 +26,7 @@ import com.tinkerpop.blueprints.Graph;
 
 public class ExperimentRunner {
 
+	private boolean saveResult = false;
 	private List<Experiment> experiments;
 
 	public ExperimentRunner() {
@@ -44,6 +45,7 @@ public class ExperimentRunner {
 	}
 
 	public void run(Graph graph) throws IOException {
+		System.out.println(graph.getClass().getCanonicalName());
 		GraphTransformer transformer = new GraphTransformerImpl(graph);
 		StopWatch allExperimentWatch = new StopWatch();
 		allExperimentWatch.start();
@@ -55,12 +57,24 @@ public class ExperimentRunner {
 			singleExperimentWatch.stop();
 			long experimentTime = singleExperimentWatch.getTime();
 			System.out.println(MessageFormat.format("Experiment {0} - {1}[ms] ", i, experimentTime));
-			try (OutputStream os = new FileOutputStream(i + ".txt")) {
-				transformer.show(os);
+			if (saveResult) {
+				try (OutputStream os = new FileOutputStream(i + ".txt")) {
+					transformer.show(os);
+				}
 			}
 		}
 		allExperimentWatch.stop();
 		long allExperimentTime = allExperimentWatch.getTime();
 		System.out.println(MessageFormat.format("All Experiments - {0}[ms] ", allExperimentTime));
 	}
+
+	public boolean isSaveResult() {
+		return saveResult;
+	}
+
+	public void setSaveResult(boolean saveResult) {
+		this.saveResult = saveResult;
+	}
+
+	
 }

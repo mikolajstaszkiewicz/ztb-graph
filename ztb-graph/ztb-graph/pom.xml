@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>pl.edu.agh.kis</groupId>
 	<artifactId>ztb-graph</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<properties>
 		<titan.version>0.4.1</titan.version>
 		<blueprint.version>2.4.0</blueprint.version>
@@ -29,6 +29,16 @@
 		<dependency>
 			<groupId>com.tinkerpop.blueprints</groupId>
 			<artifactId>blueprints-dex-graph</artifactId>
+			<version>${blueprint.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.lambdazen.bitsy</groupId>
+			<artifactId>bitsy</artifactId>
+			<version>1.5.1</version> <!-- Use 1.2 for production till 1/1/2014 -->
+		</dependency>
+		<dependency>
+			<groupId>com.tinkerpop.blueprints</groupId>
+			<artifactId>blueprints-orient-graph</artifactId>
 			<version>${blueprint.version}</version>
 		</dependency>
 		<dependency>

@@ -1,14 +1,14 @@
 package pl.edu.agh.kis.ztb.graph.impl;
 
+import pl.edu.agh.kis.ztb.graph.GraphTransformer;
+import pl.edu.agh.kis.ztb.graph.RuleExecutor;
+import pl.edu.agh.kis.ztb.graph.function.VertexLabelAdd;
+import pl.edu.agh.kis.ztb.graph.function.VertexLabelRemove;
+import pl.edu.agh.kis.ztb.graph.util.GraphConst;
+
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.gremlin.java.GremlinPipeline;
-
-import pl.edu.agh.kis.ztb.graph.GraphTransformer;
-import pl.edu.agh.kis.ztb.graph.RuleExecutor;
-import pl.edu.agh.kis.ztb.graph.function.VertexLabelRemove;
-import pl.edu.agh.kis.ztb.graph.function.VertexLabelAdd;
-import pl.edu.agh.kis.ztb.graph.util.GraphConst;
 
 public class RuleExecutorImpl implements RuleExecutor {
 
