@@ -2,6 +2,7 @@ package pl.edu.agh.kis.ztb.graph;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.apache.commons.io.FileUtils;
 
@@ -16,16 +17,21 @@ import com.tinkerpop.blueprints.impls.tg.TinkerGraph;
 import com.tinkerpop.blueprints.util.io.graphml.GraphMLReader;
 
 public class GraphMain {
+
 	public static void main(String[] args) throws IOException {
 		ExperimentRunner runner = new ExperimentRunner();
 		runner.setSaveResult(false);
 		Graph graphs[] = new Graph[] { new TinkerGraph(),
-				new DexGraph("target/graph/dex"),
-				new OrientGraph("memory:demo"),
+				new DexGraph("target/graph/dex/dex.db"),
+			new OrientGraph("memory:demo"),
 				new Neo4jGraph("target/graph/neo4j"),
-				new BitsyGraph() };
+				new BitsyGraph()
+				};
+		
+		
 		for (Graph graph : graphs) {
-			GraphMLReader.inputGraph(graph, "src/main/resources/graph-ml.xml");
+			InputStream resourceAsStream = GraphMain.class.getClassLoader().getResourceAsStream("graph-ml.xml");
+			GraphMLReader.inputGraph(graph, resourceAsStream);
 			runner.run(graph);
 			graph.shutdown();
 		}

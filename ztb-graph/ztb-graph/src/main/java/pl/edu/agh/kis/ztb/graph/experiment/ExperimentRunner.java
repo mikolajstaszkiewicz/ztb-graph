@@ -28,7 +28,8 @@ public class ExperimentRunner {
 
 	private boolean saveResult = false;
 	private List<Experiment> experiments;
-
+	Runtime runtime = Runtime.getRuntime();
+	
 	public ExperimentRunner() {
 		experiments = new ArrayList<Experiment>(10);
 		experiments.add(new Experiment0());
@@ -46,12 +47,14 @@ public class ExperimentRunner {
 
 	public void run(Graph graph) throws IOException {
 		System.out.println(graph.getClass().getCanonicalName());
+	
 		GraphTransformer transformer = new GraphTransformerImpl(graph);
 		StopWatch allExperimentWatch = new StopWatch();
 		allExperimentWatch.start();
 		for (int i = 0; i < experiments.size(); i++) {
 			StopWatch singleExperimentWatch = new StopWatch();
 			singleExperimentWatch.start();
+		
 			Experiment experiment = experiments.get(i);
 			experiment.execute(graph);
 			singleExperimentWatch.stop();
@@ -66,6 +69,7 @@ public class ExperimentRunner {
 		allExperimentWatch.stop();
 		long allExperimentTime = allExperimentWatch.getTime();
 		System.out.println(MessageFormat.format("All Experiments - {0}[ms] ", allExperimentTime));
+	
 	}
 
 	public boolean isSaveResult() {

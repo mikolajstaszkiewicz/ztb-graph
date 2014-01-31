@@ -19,7 +19,7 @@ import com.tinkerpop.blueprints.util.io.graphml.GraphMLReader;
 @RunWith(value = Parameterized.class)
 public class ExperimentRunnerTest extends AGraphTest {
 	private ExperimentRunner experimentRunner = new ExperimentRunner();
-
+	Runtime runtime = Runtime.getRuntime();
 	public ExperimentRunnerTest(Graph graph) {
 		super(graph);
 	}
@@ -27,6 +27,7 @@ public class ExperimentRunnerTest extends AGraphTest {
 	@Before
 	public void test() throws IOException {
 		GraphMLReader.inputGraph(graph, "src/main/resources/graph-ml.xml");
+
 		experimentRunner.setSaveResult(true);
 	}
 
@@ -34,7 +35,7 @@ public class ExperimentRunnerTest extends AGraphTest {
 	public void experimentTest() throws IOException {
 		experimentRunner.run(graph);
 		for (int i = 0; i < 10; ++i) {
-			System.out.println("experiment " + i);
+			//System.out.println("experiment " + i);
 			List<String> expected = FileUtils.readLines(new File("src/test/resources/" + i + ".txt"));
 			List<String> actuals = FileUtils.readLines(new File(i + ".txt"));
 			Assert.assertEquals(expected.size(), actuals.size());
